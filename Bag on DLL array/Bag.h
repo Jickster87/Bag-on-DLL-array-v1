@@ -4,31 +4,30 @@
 
 //DO NOT CHANGE THIS PART
 #define NULL_TELEM -111111;
-// #define MAX_CAPACITY 32;
+
+
 typedef int TElem;
 class BagIterator; 
 class Bag {
 
 private:
 	static const int MAX_CAPACITY = 32;
-	static const int MAX_CAPACITY_2 = 64; // MAX*2 need later?
-
-	int capacity;
+	int capacity = MAX_CAPACITY;
 	int sizeBag;
 
 	//actual data array
-	TElem elems[MAX_CAPACITY];
+	TElem* elems = new TElem[capacity];
 
 	//fake pointers
-	int next[MAX_CAPACITY];
-	int prev[MAX_CAPACITY];
+	int* next = new int[capacity];
+	int* prev = new int[capacity];
 
 	// start & end pos
 	int head;
 	int tail;
 
 	// first empty spot to insert new elem
-	int firstEmpty; // array or int ??
+	int firstEmpty; 
 
 	//DO NOT CHANGE THIS PART
 	friend class BagIterator;

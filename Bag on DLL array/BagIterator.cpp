@@ -19,7 +19,7 @@ void BagIterator::next() {
 	if(!valid()) {
 		throw exception();
 	}
-	this->currentPosition = bag.next[currentPosition];
+	currentPosition = bag.next[currentPosition];
 }
 
 
