@@ -4,34 +4,25 @@
 
 //DO NOT CHANGE THIS PART
 #define NULL_TELEM -111111;
-
-
+#define INIT_CAPACITY 16;
 typedef int TElem;
 class BagIterator; 
 class Bag {
 
 private:
-	static const int MAX_CAPACITY = 32;
-	int capacity = MAX_CAPACITY;
-	int sizeBag;
-
-	//actual data array
-	TElem* elems = new TElem[capacity];
-
-	//fake pointers
-	int* next = new int[capacity];
-	int* prev = new int[capacity];
-
-	// start & end pos
+	struct DLLANode {
+		TElem elems;
+		int next;
+		int prev;
+	};
+	int capacity;
 	int head;
 	int tail;
-
-	// first empty spot to insert new elem
-	int firstEmpty; 
+	int firstEmpty;
+	int sizeBag;
 
 	//DO NOT CHANGE THIS PART
 	friend class BagIterator;
-
 public:
 	//constructor
 	Bag();
