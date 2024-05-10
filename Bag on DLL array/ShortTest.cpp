@@ -3,7 +3,6 @@
 #include "Bag.h"
 #include "BagIterator.h"
 
-
 void testAll() { 
 	Bag b;
 	assert(b.isEmpty() == true);
@@ -16,6 +15,9 @@ void testAll() {
 	b.add(11);
 	b.add(-3);
 	assert(b.size() == 7);
+    assert(b.search(5) == true);
+    assert(b.search(1) == true);
+    assert(b.search(7) == true);
 	assert(b.search(10) == true);
 	assert(b.search(16) == false);
 	assert(b.nrOccurrences(1) == 2);

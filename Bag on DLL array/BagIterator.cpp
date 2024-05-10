@@ -7,11 +7,11 @@ using namespace std;
 
 BagIterator::BagIterator(const Bag& c): bag(c)
 {
-	currentPosition = bag.head;
+    currentElem = bag.head;
 }
 
 void BagIterator::first() {
-	currentPosition = bag.head;
+    currentElem = bag.head;
 }
 
 
@@ -19,21 +19,20 @@ void BagIterator::next() {
 	if(!valid()) {
 		throw exception();
 	}
-	currentPosition = bag.next[currentPosition];
-}
+    currentElem = bag.nodes[currentElem].next;
 
+}
 
 bool BagIterator::valid() const {
-	return currentPosition != -1;
+	return currentElem != -1;
 }
-
 
 
 TElem BagIterator::getCurrent() const
 {
-	if (!valid())
+	if (currentElem == -1)
 	{
 		throw exception();
 	}
-	return bag.elems[currentPosition];
+	return bag.nodes[currentElem].elem;
 }
