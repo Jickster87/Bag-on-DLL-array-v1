@@ -10,7 +10,7 @@ class BagIterator;
 class Bag {
 
 private:
-    static const int INIT_CAPACITY = 16;
+    static const int INIT_CAPACITY = 25000;
 	struct DLLANode {
 		TElem elem;
 		int next;

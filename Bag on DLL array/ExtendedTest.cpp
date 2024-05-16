@@ -13,13 +13,8 @@ void testIteratorSteps(Bag& bag) {
 	BagIterator bi = bag.iterator();
 	while (bi.valid()) {
 		count++;
-		// Print the current element being iterated over
-		//cout << "Current element: " << bi.getCurrent() << endl;
-		// Move to the next element
 		bi.next();
 	}
-	// Print the final count and bag size for comparison
-	//cout << "Count: " << count << ", Bag size: " << bag.size() << endl;
 	assert(count == bag.size());
 }
 

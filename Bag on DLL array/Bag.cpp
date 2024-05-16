@@ -33,6 +33,7 @@ void Bag::add(TElem elem) {
         resize(nodes);
         newElem = allocate(nodes);
     }
+
     // add elem on alloc node
     nodes[newElem].elem = elem;
 
@@ -148,7 +149,7 @@ int Bag::allocate(DLLANode* nodes) {
 void Bag::free(DLLANode* nodes, int pos){
     nodes[pos].next = firstEmpty;
     nodes[pos].prev = -1;
-    if ((firstEmpty == -1)) {
+    if (firstEmpty == -1) {
         nodes[firstEmpty].prev = pos;
     }
     firstEmpty = pos;
