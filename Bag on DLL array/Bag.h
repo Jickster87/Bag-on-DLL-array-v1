@@ -10,27 +10,27 @@ class BagIterator;
 class Bag {
 
 private:
-    static const int INIT_CAPACITY = 25000;
+    //static const int INIT_CAPACITY = 16;
 	struct DLLANode {
 		TElem elem;
 		int next;
 		int prev;
 	};
-	int capacity = INIT_CAPACITY;
+	int capacity;
 	int head;
 	int tail;
 	int firstEmpty;
 	int sizeBag;
-    DLLANode* nodes = new DLLANode[capacity];
+    DLLANode* nodes;
 	//DO NOT CHANGE THIS PART
 	friend class BagIterator;
 public:
 	//constructor
 	Bag();
 
-    int allocate(DLLANode* nodes);
-    void free(DLLANode* nodes, int poz);
-    void resize(DLLANode* nodes);
+    int allocate();
+    void free(int pos);
+    void resize();
     
     //adds an element to the bag
 	void add(TElem e);

@@ -4,6 +4,7 @@
 #include <iostream>
 
 Bag::Bag() {
+    capacity = 20;
 	nodes = new DLLANode[capacity];
     //init array
     for (int i = 0; i < capacity; ++i) {
@@ -26,15 +27,13 @@ Bag::Bag() {
 
 
 void Bag::add(TElem elem) {
-    int newElem = allocate(nodes);
-    
+  
     // resize
-    if (newElem == -1) {
-        resize(nodes);
-        newElem = allocate(nodes);
+    if (firstEmpty == -1) {
+        resize();
     }
 
-    // add elem on alloc node
+    int newElem = allocate();
     nodes[newElem].elem = elem;
 
     if (tail != -1) 
@@ -47,6 +46,7 @@ void Bag::add(TElem elem) {
         head = newElem;
     }
     tail = newElem;
+    nodes[newElem].next = -1;
 
     sizeBag++;
 }
@@ -77,7 +77,7 @@ bool Bag::remove(TElem elem) {
     }
 
     // Mark the node as empty using the free() function
-    free(nodes, current);
+    free(current);
 
     // Decrement sizeBag
     sizeBag--;
@@ -85,68 +85,70 @@ bool Bag::remove(TElem elem) {
     return true;
 }
 
-void Bag::resize(DLLANode *nodes) {
+void Bag::resize() {
+
     int newCapacity = capacity * 2;
     DLLANode* newNodes = new DLLANode[newCapacity];
 
-    //init newNodes
-    for (int i = 0; i < capacity; ++i) {
-        newNodes[i].elem = NULL_TELEM; // or any default value you want to initialize with
-        if (i < capacity - 1) {
-            newNodes[i].next = i + 1;
-        }
-        else {
-            newNodes[i].next = -1; // last node, so next points to nullptr
-        }
-        if (i > 0) {
-            newNodes[i].prev = i - 1;
-        }
-        else {
-            newNodes[i].prev = -1; // first node, so prev points to nullptr
-        }
-    }
-
     //copy existing nodes
-    for (int i=0; i < capacity; i++) {
+    for (int i = 0; i < capacity; i++) {
         newNodes[i] = nodes[i];
     }
 
-    // update stuff
-    head = tail = -1;
-    firstEmpty = capacity;
-    sizeBag = capacity;
-
-    // *cheat gpt
-    for (int i = capacity; i < newCapacity; i++) {
-        if (i == newCapacity - 1) {
-            // If it's the last node in the new array, set next to -1 (nullptr)
-            newNodes[i].next = -1;
-        }
-        else {
-            // Otherwise, set next to the index of the next node
+    //LAST ISSUE WAS THIS FOR LOOP  (THIS IS CORRECT)
+    for (int i = capacity; i < newCapacity; i++) 
+        {
+            newNodes[i].elem = NULL_TELEM;
             newNodes[i].next = i + 1;
+            newNodes[i].prev = i - 1;
         }
-    }
 
+    // THIS LOOP BELOW IS WRONG !!!
+    // 
+    //for (int i = capacity; i < newCapacity; i++) {
+    //    newNodes[i].elem = NULL_TELEM; 
+    //    if (i < capacity - 1) {
+    //        newNodes[i].next = i + 1;
+    //    }
+    //    else {
+    //        newNodes[i].next = -1;
+    //    }
+    //    if (i > capacity) {
+    //        newNodes[i].prev = i - 1;
+    //    }
+    //    else {
+    //        newNodes[i].prev = -1; 
+    //    }
+    //}
+    
+
+    newNodes[newCapacity - 1].next = -1;
+
+    // update stuff
     delete [] nodes;
     nodes = newNodes;
+    firstEmpty = capacity;
     capacity = newCapacity;
 }
 
-int Bag::allocate(DLLANode* nodes) {
-    int newElem = firstEmpty;
+int Bag::allocate() {
+    int newElem = firstEmpty; // get index of empty slot
+
+    // if there's a slot
     if (newElem != -1) {
+        //update firstEmpty to point to new empty slot, as this one just got ocupied
         firstEmpty = nodes[firstEmpty].next;
+
         if (firstEmpty != -1) {
-            nodes[firstEmpty].prev = -1;
-        }
+            nodes[firstEmpty].prev = -1; 
+}
         nodes[newElem].next = -1;
         nodes[newElem].prev = -1;
     }
     return newElem;
 }
 
-void Bag::free(DLLANode* nodes, int pos){
+void Bag::free(int pos){
     nodes[pos].next = firstEmpty;
     nodes[pos].prev = -1;
     if (firstEmpty == -1) {
